@@ -118,4 +118,8 @@ XML attributes can be added to the DropDownList view:
 | attr_primaryTextColor | reference / color | Color for all other elements. Some elements use a faded version of this color e.g. description text |
 | attr_showAllExpanded | boolean | Default false. If true, all tips are shown and the header is hidden. Example in "In-app example" gif as the "Tips" activity |
 
-
+### Kotlin
+Don't remove the space used by the view if the tips list is empty:
+```kotlin
+dropDownList.keepSpaceIfEmpty = true
+```
