@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="attr_primaryTextColor" format="reference|color" />
+    <attr name="attr_secondaryTextColor" format="reference|color" />
+
+    <declare-styleable name="DropDownList">
+        <attr name="attr_primaryTextColor" />
+        <attr name="attr_accentColor" />
+        <attr name="attr_showAllExpanded" format="boolean"/>
+    </declare-styleable>
+
+</resources>
