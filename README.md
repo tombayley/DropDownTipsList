@@ -1,7 +1,6 @@
 # DropDownTipsList 
 
-[![Release](https://jitpack.io/v/User/Repo.svg)]
-(https://jitpack.io/#tombayley/DropDownTipsList)
+[![](https://jitpack.io/v/tombayley/DropDownTipsList.svg)](https://jitpack.io/#tombayley/DropDownTipsList)
 
 A simple library for showing app tips on Android
 
