@@ -32,7 +32,7 @@ allprojects {
 And add the library to your module build.gradle:
 ```
 dependencies {
-    implementation 'com.github.tombayley:DropDownTipsList:Tag'
+    implementation 'com.github.tombayley:DropDownTipsList:1.0.0'
 }
 ```
 
