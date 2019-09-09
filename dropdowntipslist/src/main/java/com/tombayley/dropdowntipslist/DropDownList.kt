@@ -43,6 +43,12 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
     //  - Useful for showing a list of all tips
     protected var showAllExpanded: Boolean = false
 
+    var keepSpaceIfEmpty: Boolean = false
+    set(value) {
+        field = value
+        hideView()
+    }
+
     companion object {
         // Default key return value if an item was not added to the list
         const val ITEM_NOT_ADDED = -1
@@ -50,7 +56,6 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
 
     init {
         inflate(context, R.layout.drop_down_list, this)
-        visibility = View.GONE
 
         listContainer = findViewById(R.id.list_container)
         arrow = findViewById(R.id.arrow)
@@ -75,7 +80,11 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
         primaryTextColorFaded = ColorUtil.giveColorAlpha(primaryTextColor, 0.6f)
         accentColor = attributes.getColor(R.styleable.DropDownList_attr_accentColor, Color.BLUE)
         showAllExpanded = attributes.getBoolean(R.styleable.DropDownList_attr_showAllExpanded, false)
+        keepSpaceIfEmpty = attributes.getBoolean(R.styleable.DropDownList_attr_keepSpaceIfEmpty, false)
         attributes.recycle()
+
+        // Hide the drop down list as it is empty
+        hideView()
 
         headerTitlePrefix.setTextColor(primaryTextColor)
         headerTitle.setTextColor(primaryTextColor)
@@ -188,12 +197,16 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
             headerTitle.text = (listContainer.getChildAt(0).findViewById(R.id.title) as TextView).text
         } else {
             headerTitle.text = ""
-            visibility = View.GONE
+            hideView()
         }
 
         numTips.text = newNumListItems.toString()
 
         if (isExpanded) animateHeightChange(prevHeight, getListMeasuredHeight())
+    }
+
+    protected fun hideView() {
+        visibility = if (keepSpaceIfEmpty) View.INVISIBLE else View.GONE
     }
 
     /**
