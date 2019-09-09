@@ -8,6 +8,7 @@ A simple library for showing app tips on Android
 ## Demo
 
 [<img src="media/example.gif" width="250" />]()
+[<img src="media/real_example.gif" width="250" />]()
 
 
 ## How to include
