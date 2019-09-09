@@ -2,7 +2,13 @@
 
 [![](https://jitpack.io/v/tombayley/DropDownTipsList.svg)](https://jitpack.io/#tombayley/DropDownTipsList)
 
-A simple library for showing app tips on Android
+A simple library for showing app tips on Android.
+
+Tips can be set to be shown after a specific amount of time.
+They can also have an action button that will execute a provided Runnable and dismiss the tip when pressed.
+
+
+Used in [this app](https://play.google.com/store/apps/details?id=com.tombayley.bottomquicksettings) (also shown in "In-app example" gif below)
 
 
 ## Demo
@@ -37,7 +43,7 @@ dependencies {
 
 ### XML
 Add the following code to your layout:
-```
+```xml
 <com.tombayley.dropdowntipslist.DropDownList
     android:id="@+id/drop_down_list"
     android:layout_width="match_parent"
@@ -52,9 +58,14 @@ android:animateLayoutChanges="true"
 ```
 
 ### Kotlin
-```
-... 
+The title, description, action button text and action runnable can be set when creating an Item.
 
+`setAppearAfter()` must also be called with:
+- an initial time (Long) to start "counting down" from (e.g. app install time)
+- a time in hours until the tip item is shown,
+- a preference key which is used to store if an item has been dismissed (so it doesn't show again)
+
+```kotlin
 val dropDownList: DropDownList = findViewById(R.id.drop_down_list)
 dropDownList.preferences = preferences
 
@@ -92,3 +103,19 @@ dropDownListItems.add(item)
 
 dropDownList.addAll(dropDownListItems)
 ```
+
+
+
+
+## Customising
+
+### XML
+XML attributes can be added to the DropDownList view:
+
+| Attribute name | Type | Description |
+| --- | --- | --- |
+| attr_accentColor | reference / color | Color for number of tips and action button text |
+| attr_primaryTextColor | reference / color | Color for all other elements. Some elements use a faded version of this color e.g. description text |
+| attr_showAllExpanded | boolean | Default false. If true, all tips are shown and the header is hidden. Example in "In-app example" gif as the "Tips" activity |
+
+
