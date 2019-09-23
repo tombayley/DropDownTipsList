@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">DropDownTipsList</string>
+    <string name="app_name" translatable="false">DropDownTipsList</string>
     <string name="tips">Tips</string>
 </resources>
