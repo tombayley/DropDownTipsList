@@ -2,7 +2,7 @@
 
 [![](https://jitpack.io/v/tombayley/DropDownTipsList.svg)](https://jitpack.io/#tombayley/DropDownTipsList)
 [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
-
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-DropDownTipsList-green.svg?style=flat)](https://android-arsenal.com/details/1/7977)
 
 A simple library for showing app tips on Android.
 
