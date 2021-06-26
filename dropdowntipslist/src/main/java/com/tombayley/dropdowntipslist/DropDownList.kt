@@ -87,8 +87,8 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
         ImageViewCompat.setImageTintList(arrow, ColorStateList.valueOf(primaryTextColorFaded))
 
         if (showAllExpanded) {
-            listContainer.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
             header.visibility = View.GONE
+            listContainer.visibility = View.VISIBLE
         }
     }
 
