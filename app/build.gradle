@@ -23,8 +23,6 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-//    implementation 'com.github.tombayley:DropDownTipsList:1.2.1'
     implementation project(':dropdowntipslist')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
