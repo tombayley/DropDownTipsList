@@ -34,7 +34,7 @@ allprojects {
 And add the library to your module build.gradle:
 ```
 dependencies {
-    implementation 'com.github.tombayley:DropDownTipsList:1.2.1'
+    implementation 'com.github.tombayley:DropDownTipsList:1.3.0'
 }
 ```
 
@@ -54,9 +54,15 @@ Add the following code to your layout:
     app:attr_primaryTextColor="@android:color/black" />
 ```
 
+
+To enable smooth expand/collapse transitions:
 In the parent viewgroup, add:
 ```
 android:animateLayoutChanges="true"
+```
+Enable the CHANGING LayoutTransition on the parent viewgroup
+```
+parentViewGroup.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
 ```
 
 ### Kotlin
