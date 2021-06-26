@@ -1,10 +1,11 @@
 package com.tombayley.dropdowntipslistexample
 
+import android.animation.LayoutTransition
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.LinearLayout
 import com.tombayley.dropdowntipslist.DropDownList
 import java.util.*
 
@@ -18,11 +19,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val preferences: SharedPreferences = getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
         val appInstallTime = getAppInstallTime()
 
-        val dropDownList: DropDownList = findViewById(R.id.drop_down_list)
-        dropDownList.preferences = preferences
+        val dropDownList = findViewById<DropDownList>(R.id.drop_down_list)
+        dropDownList.preferences = getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
+
+        // Allow a smooth animation of content below the tips list when expanding/collapsing
+        findViewById<LinearLayout>(R.id.content_area)
+            .layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
 
         val dropDownListItems = LinkedList<DropDownList.Item>()
         var item: DropDownList.Item

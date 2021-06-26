@@ -1,6 +1,5 @@
 package com.tombayley.dropdowntipslist
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Color
@@ -10,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import java.lang.Exception
 import java.util.*
 
@@ -139,17 +137,7 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
 
         visibility = View.VISIBLE
 
-        val prevHeight = getListMeasuredHeight()
-
-        listContainer.addView(inflateItem(
-            item,
-            Runnable { removeItem(itemKey, item) }
-        ))
-
-        val newHeight = getListMeasuredHeight()
-        if (isExpanded) {
-            animateHeightChange(prevHeight, newHeight)
-        }
+        listContainer.addView(inflateItem(item) { removeItem(itemKey, item) })
 
         return itemKey
     }
@@ -183,7 +171,6 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
         val position: Int? = mListItemKeys[key]
         position ?: return
 
-        val prevHeight = getListMeasuredHeight()
         listContainer.removeViewAt(position)
         reCalcListPositions(position)
 
@@ -201,8 +188,6 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
         }
 
         numTips.text = newNumListItems.toString()
-
-        if (isExpanded) animateHeightChange(prevHeight, getListMeasuredHeight())
     }
 
     protected fun hideView() {
@@ -215,7 +200,7 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
     public fun expand() {
         headerTitle.visibility = View.INVISIBLE
         numTips.visibility = View.INVISIBLE
-        animateHeightChange(0, getListMeasuredHeight())
+        listContainer.visibility = View.VISIBLE
         arrow.setImageResource(R.drawable.ic_arrow_up)
     }
 
@@ -225,33 +210,8 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
     public fun collapse() {
         headerTitle.visibility = View.VISIBLE
         numTips.visibility = View.VISIBLE
-        animateHeightChange(getListMeasuredHeight(), 0)
+        listContainer.visibility = View.GONE
         arrow.setImageResource(R.drawable.ic_arrow_down)
-    }
-
-    /**
-     * Animates the dropdown list height
-     *
-     * @param from Int
-     * @param to Int
-     */
-    protected fun animateHeightChange(from: Int, to: Int) {
-        val anim = ValueAnimator.ofInt(from, to)
-        anim.addUpdateListener { valueAnimator ->
-            listContainer.layoutParams.height = valueAnimator.animatedValue as Int
-            listContainer.requestLayout()
-        }
-        anim.duration = 500
-        anim.interpolator = FastOutSlowInInterpolator()
-        anim.start()
-    }
-
-    protected fun getListMeasuredHeight(): Int {
-        listContainer.measure(
-            MeasureSpec.makeMeasureSpec(listContainer.width, MeasureSpec.EXACTLY),
-            MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
-        )
-        return listContainer.measuredHeight
     }
 
     /**

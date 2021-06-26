@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
-    android:padding="12dp">
+    android:padding="12dp"
+    >
 
     <LinearLayout
         android:layout_width="0dp"
@@ -15,20 +16,23 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toStartOf="@+id/dismiss_item"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            />
 
         <TextView
             android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:textColor="#5E5E5E" />
+            android:textColor="#5E5E5E"
+            />
 
         <TextView
             android:id="@+id/action"
@@ -41,11 +45,12 @@
             android:gravity="end"
             android:padding="12dp"
             android:textAllCaps="true"
-            android:textColor="@android:color/holo_blue_dark" />
+            android:textColor="@android:color/holo_blue_dark"
+            />
 
     </LinearLayout>
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/dismiss_item"
         android:layout_width="32dp"
         android:layout_height="32dp"
@@ -55,6 +60,7 @@
         android:padding="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_close" />
+        app:srcCompat="@drawable/ic_close"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
