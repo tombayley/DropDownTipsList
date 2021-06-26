@@ -29,47 +29,52 @@ class MainActivity : AppCompatActivity() {
             .layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
 
         val dropDownListItems = LinkedList<DropDownList.Item>()
-        var item: DropDownList.Item
 
-        item = DropDownList.Item(
-            title = "Enter a title",
-            description = "Enter a description",
-            actionText = getString(android.R.string.ok),
-            action = Runnable {
-                // ...
+        dropDownListItems.add(
+            DropDownList.Item(
+                title = "Enter a title",
+                description = "Enter a description",
+                actionText = getString(android.R.string.ok),
+                action = Runnable {
+                    // ...
+                }
+            ).apply {
+                setAppearAfter(appInstallTime, 0, "drop_list_example1")
             }
         )
-        item.setAppearAfter(appInstallTime, 0, "drop_list_example1")
-        dropDownListItems.add(item)
 
-        item = DropDownList.Item(
-            title = "Example Item 2",
-            description = "Example Description 2",
-            actionText = "Action 2",
-            action = Runnable {
-                // ...
+        dropDownListItems.add(
+            DropDownList.Item(
+                title = "Example Item 2",
+                description = "Example Description 2",
+                actionText = "Action 2",
+                action = Runnable {
+                    // ...
+                }
+            ).apply {
+                setAppearAfter(appInstallTime, 0, "drop_list_example2")
             }
         )
-        item.setAppearAfter(appInstallTime, 0, "drop_list_example2")
-        dropDownListItems.add(item)
 
-        item = DropDownList.Item(
-            title = "Tip with no action",
-            description = "Tip description"
+        dropDownListItems.add(
+            DropDownList.Item(
+                title = "Tip with no action",
+                description = "Tip description"
+            ).apply {
+                setAppearAfter(appInstallTime, 12, "drop_list_example3")
+            }
         )
-        item.setAppearAfter(appInstallTime, 12, "drop_list_example2")
-        dropDownListItems.add(item)
 
         dropDownList.addAll(dropDownListItems)
     }
 
     private fun getAppInstallTime(): Long {
-        try {
-            return packageManager.getPackageInfo(BuildConfig.APPLICATION_ID, 0).firstInstallTime
+        return try {
+             packageManager.getPackageInfo(BuildConfig.APPLICATION_ID, 0).firstInstallTime
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
+            0
         }
-        return 0
     }
 
 }

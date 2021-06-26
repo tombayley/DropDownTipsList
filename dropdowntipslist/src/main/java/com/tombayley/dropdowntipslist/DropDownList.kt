@@ -2,6 +2,7 @@ package com.tombayley.dropdowntipslist
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.widget.ImageViewCompat
 import java.lang.Exception
 import java.util.*
 
@@ -20,28 +22,28 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
     lateinit var preferences: SharedPreferences
 
     // Views
-    protected var listContainer: LinearLayout
-    protected var arrow: ImageView
-    protected var headerTitlePrefix: TextView
-    protected var headerTitle: TextView
-    protected var numTips: TextView
-    protected var header: ViewGroup
+    private var listContainer: LinearLayout
+    private var arrow: ImageView
+    private var headerTitlePrefix: TextView
+    private var headerTitle: TextView
+    private var numTips: TextView
+    private var header: ViewGroup
 
     // State
-    protected var isExpanded: Boolean = false
-    protected var mCurrentKey = 0
-    protected var mListItemKeys = LinkedHashMap<Int, Int>()
+    private var isExpanded = false
+    private var mCurrentKey = 0
+    private var mListItemKeys = LinkedHashMap<Int, Int>()
 
-    protected var primaryTextColor: Int = 0
-    protected var primaryTextColorFaded: Int = 0
-    protected var accentColor: Int = 0
+    private var primaryTextColor = 0
+    private var primaryTextColorFaded = 0
+    private var accentColor = 0
 
     // If false, drop down behaves normally
     // If true, the droop down list header is hidden and is permanently expanded
     //  - Useful for showing a list of all tips
-    protected var showAllExpanded: Boolean = false
+    private var showAllExpanded = false
 
-    var keepSpaceIfEmpty: Boolean = false
+    var keepSpaceIfEmpty = false
     set(value) {
         field = value
         hideView()
@@ -64,12 +66,7 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
 
         headerTitle.isSelected = true
         header.setOnClickListener {
-            if (isExpanded) {
-                collapse()
-            } else {
-                expand()
-            }
-
+            if (isExpanded) collapse() else expand()
             isExpanded = !isExpanded
         }
 
@@ -87,7 +84,7 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
         headerTitlePrefix.setTextColor(primaryTextColor)
         headerTitle.setTextColor(primaryTextColor)
         numTips.setTextColor(accentColor)
-        ColorUtil.setImageColor(arrow, primaryTextColorFaded)
+        ImageViewCompat.setImageTintList(arrow, ColorStateList.valueOf(primaryTextColorFaded))
 
         if (showAllExpanded) {
             listContainer.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -101,9 +98,7 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
      * @param items List<Item>
      */
     public fun addAll(items: List<Item>) {
-        for (item in items) {
-            addItem(item)
-        }
+        items.forEach { addItem(it) }
     }
 
     /**
@@ -148,7 +143,7 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
      * @param item Item
      * @return Boolean
      */
-    protected fun isItemValid(item: Item): Boolean {
+    private fun isItemValid(item: Item): Boolean {
         if (
             item.beginTime == Item.UNDEFINED.toLong()
             || item.appearAfterHours == Item.UNDEFINED
@@ -168,8 +163,7 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
      */
     public fun removeItem(key: Int, item: Item) {
         if (!mListItemKeys.containsKey(key)) return
-        val position: Int? = mListItemKeys[key]
-        position ?: return
+        val position = mListItemKeys[key] ?: return
 
         listContainer.removeViewAt(position)
         reCalcListPositions(position)
@@ -190,7 +184,7 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
         numTips.text = newNumListItems.toString()
     }
 
-    protected fun hideView() {
+    private fun hideView() {
         visibility = if (keepSpaceIfEmpty) View.INVISIBLE else View.GONE
     }
 
@@ -222,7 +216,7 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
      * @param beginTime Long Time to start "countdown" to show Item. Typically app install time
      * @return Boolean
      */
-    protected fun isAfterHours(hoursAfter: Long, key: String, beginTime: Long): Boolean {
+    private fun isAfterHours(hoursAfter: Long, key: String, beginTime: Long): Boolean {
         val savedTimeStart = preferences.getLong(key, 0)
         val currentTime = System.currentTimeMillis()
 
@@ -239,7 +233,7 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
      *
      * @param positionRemoved Int
      */
-    protected fun reCalcListPositions(positionRemoved: Int) {
+    private fun reCalcListPositions(positionRemoved: Int) {
         if (listContainer.childCount == 0) return
 
         for (entry in mListItemKeys.entries) {
@@ -255,13 +249,13 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
      * @param dismissRunnable Runnable
      * @return View
      */
-    protected fun inflateItem(item: Item, dismissRunnable: Runnable): View {
+    private fun inflateItem(item: Item, dismissRunnable: Runnable): View {
         val dropDownListItem = View.inflate(context, R.layout.drop_down_list_item, null) as ViewGroup
 
-        val title: TextView = dropDownListItem.findViewById(R.id.title)
-        val description: TextView = dropDownListItem.findViewById(R.id.description)
-        val actionTv: TextView = dropDownListItem.findViewById(R.id.action)
-        val dismissBtn: ImageView = dropDownListItem.findViewById(R.id.dismiss_item)
+        val title = dropDownListItem.findViewById<TextView>(R.id.title)
+        val description = dropDownListItem.findViewById<TextView>(R.id.description)
+        val actionTv = dropDownListItem.findViewById<TextView>(R.id.action)
+        val dismissBtn = dropDownListItem.findViewById<ImageView>(R.id.dismiss_item)
 
         title.text = item.title
         description.text = item.description
@@ -269,7 +263,7 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
 
         title.setTextColor(primaryTextColor)
         description.setTextColor(primaryTextColorFaded)
-        ColorUtil.setImageColor(dismissBtn, primaryTextColorFaded)
+        ImageViewCompat.setImageTintList(dismissBtn, ColorStateList.valueOf(primaryTextColorFaded))
         actionTv.setTextColor(accentColor)
 
         if (showAllExpanded) {
@@ -304,14 +298,14 @@ class DropDownList(context: Context, attrs: AttributeSet): LinearLayout(context,
      * @constructor
      */
     class Item(
-            val title: String? = null,
-            val description: String? = null,
-            val actionText: String? = null,
-            val action: Runnable? = null
+        val title: String? = null,
+        val description: String? = null,
+        val actionText: String? = null,
+        val action: Runnable? = null
     ) {
 
-        var beginTime: Long = UNDEFINED.toLong()
-        var appearAfterHours: Int = UNDEFINED
+        var beginTime = UNDEFINED.toLong()
+        var appearAfterHours = UNDEFINED
         var prefKey: String? = null
         var hasDismissedKey: String? = null
 
